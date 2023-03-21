@@ -19,9 +19,15 @@ static NSString * const gridClockModule = @"com.chrstphrknwtn.grid-clock";
     // Webview
     NSURL* indexHTMLDocumentURL = [NSURL URLWithString:[[[NSURL fileURLWithPath:[[NSBundle bundleForClass:self.class].resourcePath stringByAppendingString:@"/Webview/index.html"] isDirectory:NO] description] stringByAppendingFormat:@"?screensaver=1%@", self.isPreview ? @"&is_preview=1" : @""]];
 
-    WebView* webView = [[WebView alloc] initWithFrame:NSMakeRect(0, 0, frame.size.width, frame.size.height)];
-    webView.drawsBackground = NO; // Avoids a "white flash" just before the index.html file has loaded
-    [webView.mainFrame loadRequest:[NSURLRequest requestWithURL:indexHTMLDocumentURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0]];
+    WKWebViewConfiguration *webViewConfig = [[WKWebViewConfiguration alloc] init];
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:NSMakeRect(0, 0, frame.size.width, frame.size.height) configuration:webViewConfig];
+    webView.navigationDelegate = self;
+    webView.wantsLayer = YES;
+    webView.layer.backgroundColor = [NSColor clearColor].CGColor;
+    webView.layer.opaque = NO;
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:indexHTMLDocumentURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0];
+    [webView loadRequest:request];
     
     // Show on screens based on preferences
     NSArray* screens = [NSScreen screens];
@@ -70,7 +76,8 @@ static NSString * const gridClockModule = @"com.chrstphrknwtn.grid-clock";
     
     if (!configSheet)
     {
-        if (![NSBundle loadNibNamed:@"ConfigureSheet" owner:self])
+        NSNib *nib = [[NSNib alloc] initWithNibNamed:@"ConfigureSheet" bundle:nil];
+        if (![nib instantiateWithOwner:self topLevelObjects:nil])
         {
             NSLog( @"Failed to load configure sheet." );
         }
@@ -86,7 +93,7 @@ static NSString * const gridClockModule = @"com.chrstphrknwtn.grid-clock";
     [[NSApplication sharedApplication] endSheet:configSheet];
 }
 
-- (IBAction) okClick: (id)sender
+- (IBAction)okClick:(id)sender
 {
     ScreenSaverDefaults *defaults;
     defaults = [ScreenSaverDefaults defaultsForModuleWithName:gridClockModule];
@@ -102,9 +109,9 @@ static NSString * const gridClockModule = @"com.chrstphrknwtn.grid-clock";
     [[NSApplication sharedApplication] endSheet:configSheet];
 }
 
-#pragma mark - WebFrameLoadDelegate
+#pragma mark - WKNavigationDelegate
 
-- (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)error forFrame:(WebFrame *)frame {
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
     NSLog(@"%@ error=%@", NSStringFromSelector(_cmd), error);
 }
 
