@@ -7,6 +7,7 @@ const allElements = Array.prototype.slice.call(allNodeList, 0);
 
 const prefixElements = document.querySelectorAll('.prefix');
 const suffixElements = document.querySelectorAll('.suffix');
+const suffixRuElements = document.querySelectorAll('.suffixru');
 
 function el(selector) {
 	return document.querySelector(selector);
@@ -25,6 +26,13 @@ function setSuffixElOn(number) {
 		number = 1;
 	}
 	suffixElements[number - 1].classList.add('on');
+}
+
+function setSuffixRuElOn(number) {
+	if (parseInt(number, 10) === 13) {
+		number = 1;
+	}
+	suffixRuElements[number - 1].classList.add('on');
 }
 
 function setMinutes(minutes) {
@@ -76,19 +84,31 @@ function updateClock() {
 
 	// One minute past [hour]
 	if (parseInt(minutes, 10) === 1) {
-		setClockElOn('.one');
+		//eng setClockElOn('.one');
 		setClockElOn('.minute');
 		setClockElOn('.past');
-		setSuffixElOn(hour);
+		setSuffixRuElOn(hour);
 		return;
 	}
 
-	// [minutes] past [hour]
-	if (minutes <= 12 && minutes >= 2) {
-		setPrefixElOn(minutes);
-		setClockElOn('.minutes');
+	if (minutes === 2) {
+		setClockElOn('.prefixru');
+		setClockElOn('.minutesru');
 		setClockElOn('.past');
-		setSuffixElOn(hour);
+		setSuffixRuElOn(hour);
+		return;
+	}
+	// [minutes] past [hour]
+	if (minutes >= 3 && minutes <= 12) {
+		setPrefixElOn(minutes);
+		if (minutes >= 3 && minutes <= 4) {
+			setClockElOn('.minutesru');
+		}
+		else {
+			setClockElOn('.minutes');
+		}
+		setClockElOn('.past');
+		setSuffixRuElOn(hour);
 		return;
 	}
 
@@ -127,43 +147,43 @@ function updateClock() {
 		case 15:
 			setClockElOn('.quarter');
 			setClockElOn('.past');
-			setSuffixElOn(hour);
+			setSuffixRuElOn(hour);
 			return;
 		// Twenty past [hour]
 		case 20:
 			setClockElOn('.twenty');
 			setClockElOn('.past');
-			setSuffixElOn(hour);
+			setSuffixRuElOn(hour);
 			return;
 		// Half past [hour]
 		case 30:
 			setClockElOn('.half');
 			setClockElOn('.past');
-			setSuffixElOn(hour);
+			setSuffixRuElOn(hour);
 			return;
 		// Half to [next hour]
 		case 40:
 			setClockElOn('.twenty');
 			setClockElOn('.to');
-			setSuffixElOn(hour + 1);
+			setSuffixRuElOn(hour + 1);
 			return;
 		// Quarter to [next hour]
 		case 45:
 			setClockElOn('.quarter');
 			setClockElOn('.to');
-			setSuffixElOn(hour + 1);
+			setSuffixRuElOn(hour + 1);
 			return;
 		// Ten to [next hour]
 		case 50:
 			setClockElOn('.ten');
 			setClockElOn('.to');
-			setSuffixElOn(hour + 1);
+			setSuffixRuElOn(hour + 1);
 			return;
 		// Five to [next hour]
 		case 55:
 			setClockElOn('.five');
 			setClockElOn('.to');
-			setSuffixElOn(hour + 1);
+			setSuffixRuElOn(hour + 1);
 			return;
 	}
 

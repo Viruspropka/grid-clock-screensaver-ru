@@ -25,9 +25,9 @@ clock {
 glyph {
   float: left;
   display: block;
-  width: 6.25%;
-  height: 6.25%;
-  font-size: 2.6vh;
+  width: 5.0%;
+  height: 5.0%;
+  font-size: 2.2vh;
   font-weight: 300;
   line-height: 5.5vh;
   text-align: center;
