@@ -18,13 +18,7 @@ function setClockElOn(selector) {
 }
 
 function setPrefixElOn(number) {
-	if (parseInt(number, 10) === 10) { 
-		prefixElements[number].classList.add('on');
-	} else if (parseInt(number, 10) === 11) {
-		prefixElements[number - 2].classList.add('on');
-	} else {
-		prefixElements[number - 1].classList.add('on');
-	}
+	prefixElements[number - 1].classList.add('on');
 }
 
 function setSuffixElOn(number) {
@@ -38,14 +32,7 @@ function setSuffixRuElOn(number) {
 	if (parseInt(number, 10) === 13) {
 		number = 1;
 	}
-
-	if (parseInt(number, 10) === 10) {
-		suffixRuElements[number].classList.add('on');
-	} else if (parseInt(number, 10) === 11) {
-		suffixRuElements[number - 2].classList.add('on');
-	} else {
-		suffixRuElements[number - 1].classList.add('on');
-	}
+	suffixRuElements[number - 1].classList.add('on');
 }
 
 function setMinutes(minutes) {
