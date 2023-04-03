@@ -9,14 +9,17 @@ const prefixElements = document.querySelectorAll('.prefix');
 const suffixElements = document.querySelectorAll('.suffix');
 const suffixRuElements = document.querySelectorAll('.suffixru');
 
+// Function to get element by selector
 function el(selector) {
 	return document.querySelector(selector);
 }
 
+// Function to set clock element on
 function setClockElOn(selector) {
 	el(selector).classList.add('on');
 }
 
+// Function to set prefix element on
 function setPrefixElOn(number) {
 	if (parseInt(number, 10) === 10) { 
 		prefixElements[number].classList.add('on');
@@ -27,6 +30,7 @@ function setPrefixElOn(number) {
 	}
 }
 
+// Function to set suffix element on
 function setSuffixElOn(number) {
 	if (parseInt(number, 10) === 13) {
 		number = 1;
@@ -34,6 +38,7 @@ function setSuffixElOn(number) {
 	suffixElements[number - 1].classList.add('on');
 }
 
+// Function to set RU suffix element on
 function setSuffixRuElOn(number) {
 	if (parseInt(number, 10) === 13) {
 		number = 1;
@@ -43,11 +48,16 @@ function setSuffixRuElOn(number) {
 		suffixRuElements[number].classList.add('on');
 	} else if (parseInt(number, 10) === 11) {
 		suffixRuElements[number - 2].classList.add('on');
+	} else if (parseInt(number, 10) === 1) {
+		suffixRuElements[number].classList.add('on');
+	} else if (parseInt(number, 10) === 2) {
+		suffixRuElements[number - 2].classList.add('on');
 	} else {
 		suffixRuElements[number - 1].classList.add('on');
 	}
 }
 
+// Function to set minutes element on
 function setMinutes(minutes) {
 	minutes = minutes.toString().split('');
 
@@ -71,6 +81,7 @@ function setMinutes(minutes) {
 	}
 }
 
+// Function to clear all clock elements
 function clearClock() {
 	allElements.forEach(element => {
 		element.classList.remove('on');
